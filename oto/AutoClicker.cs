@@ -13,7 +13,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.Threading;
 
 
-namespace Otomatiks
+namespace oto
 {
     public partial class AutoClicker : UserControl
     {

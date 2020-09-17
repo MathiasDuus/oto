@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Otomatiks
+namespace oto
 {
     public partial class Form1 : Form
     {

@@ -1,4 +1,4 @@
-﻿namespace Otomatiks
+﻿namespace oto
 {
     partial class Form1
     {

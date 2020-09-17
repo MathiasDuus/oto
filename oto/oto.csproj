@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{EB4705BC-705E-49AB-A26E-23D7312134E1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Otomatiks</RootNamespace>
-    <AssemblyName>Otomatiks</AssemblyName>
+    <RootNamespace>oto</RootNamespace>
+    <AssemblyName>oto</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -104,6 +104,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
