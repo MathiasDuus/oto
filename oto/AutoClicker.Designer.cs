@@ -47,9 +47,13 @@
             this.label8 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.NumericUpDown_Kliks = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Delay)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_Kliks)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // button_stop
@@ -247,10 +251,30 @@
             this.NumericUpDown_Kliks.TabIndex = 14;
             this.NumericUpDown_Kliks.ValueChanged += new System.EventHandler(this.NumericUpDown_Kliks_ValueChanged);
             // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Enabled = false;
+            this.numericUpDown1.Location = new System.Drawing.Point(394, 264);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 39);
+            this.numericUpDown1.TabIndex = 9;
+            this.numericUpDown1.Visible = false;
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Enabled = false;
+            this.numericUpDown2.Location = new System.Drawing.Point(520, 264);
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(120, 39);
+            this.numericUpDown2.TabIndex = 15;
+            this.numericUpDown2.Visible = false;
+            // 
             // AutoClicker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.numericUpDown2);
+            this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.NumericUpDown_Kliks);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.label8);
@@ -273,6 +297,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_Kliks)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -299,5 +325,7 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.NumericUpDown NumericUpDown_Kliks;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
     }
 }

@@ -143,15 +143,17 @@ namespace oto
             {
                 while (!stop && i < max)
                 {
+                    //int j = Convert.ToInt32(numericUpDown1.Value);
+                    //int k = Convert.ToInt32(numericUpDown2.Value);
                     Point position = Cursor.Position;
                     uint x = (uint)position.X;
                     position = Cursor.Position;
                     uint y = (uint)position.Y;
                     AutoClicker.mouse_event(6U, x, y, 0U, 0U);
-                    //i%3 sleep 14
-                    if (i % 3 != 0)
+                    //i%3 sleep 15
+                    if (i % 3 == 0)
                     {
-                        Thread.Sleep(14);
+                        Thread.Sleep(15);
                     }
                     i++;
                     if (MaxKliks)
@@ -167,10 +169,10 @@ namespace oto
                     position = Cursor.Position;
                     uint y = (uint)position.Y;
                     AutoClicker.mouse_event(6U, x, y, 0U, 0U);
-
-                    if (i % 3 == 0)
+                    //i%4 sleep 13
+                    if (i % 4 == 0)
                     {
-                        Thread.Sleep(14);
+                        Thread.Sleep(13);
                     }
                     i++;
                     if (MaxKliks)
