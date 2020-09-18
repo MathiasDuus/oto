@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.VisualStudio.Threading;
 
 
 namespace oto
@@ -113,8 +112,6 @@ namespace oto
         {
             int delay = Convert.ToInt32(numericUpDown_Delay.Value);
 
-            //this.Invoke(new MethodInvoker(()=> label1.Text = CONNECTING));
-
             i = 0;
 
             if (MaxKliks)
@@ -138,7 +135,8 @@ namespace oto
                     // If it needs to go slower 
                     Thread.Sleep(delay);
                     i++;
-                    this.Invoke(new MethodInvoker(() => NumericUpDown_Kliks.Value--));                   
+                    if (MaxKliks)
+                        this.Invoke(new MethodInvoker(() => NumericUpDown_Kliks.Value--));                   
                 }
             }
             else if (delay == -1)
@@ -156,7 +154,8 @@ namespace oto
                         Thread.Sleep(14);
                     }
                     i++;
-                    this.Invoke(new MethodInvoker(() => NumericUpDown_Kliks.Value--));
+                    if (MaxKliks)
+                        this.Invoke(new MethodInvoker(() => NumericUpDown_Kliks.Value--));
                 }
             }
             else if (delay == -2)
@@ -174,7 +173,8 @@ namespace oto
                         Thread.Sleep(13);
                     }
                     i++;
-                    this.Invoke(new MethodInvoker(() => NumericUpDown_Kliks.Value--));
+                    if (MaxKliks)
+                        this.Invoke(new MethodInvoker(() => NumericUpDown_Kliks.Value--));
                 }
             }
             else
@@ -187,7 +187,8 @@ namespace oto
                     uint y = (uint)position.Y;
                     AutoClicker.mouse_event(6U, x, y, 0U, 0U);
                     i++;
-                    this.Invoke(new MethodInvoker(() => NumericUpDown_Kliks.Value--));
+                    if (MaxKliks)
+                        this.Invoke(new MethodInvoker(() => NumericUpDown_Kliks.Value--));
                 }
             }
         }
