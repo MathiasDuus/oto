@@ -1,3 +1,5 @@
+#oto the auto clicker
+
 This auto clicker is the fastest auto clicker I have ever found/created.
 To compare "OP Auto Clicker 3.0" has a maximum CPS of about 64, where "oto" has a stable* CPS of 200 and an unstable* CPS 1000+
 
