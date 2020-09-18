@@ -148,8 +148,8 @@ namespace oto
                     position = Cursor.Position;
                     uint y = (uint)position.Y;
                     AutoClicker.mouse_event(6U, x, y, 0U, 0U);
-
-                    if (i % 3 == 0)
+                    //i%3 sleep 14
+                    if (i % 3 != 0)
                     {
                         Thread.Sleep(14);
                     }
@@ -168,9 +168,9 @@ namespace oto
                     uint y = (uint)position.Y;
                     AutoClicker.mouse_event(6U, x, y, 0U, 0U);
 
-                    if (i % 5 == 0)
+                    if (i % 3 == 0)
                     {
-                        Thread.Sleep(13);
+                        Thread.Sleep(14);
                     }
                     i++;
                     if (MaxKliks)
