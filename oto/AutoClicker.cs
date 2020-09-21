@@ -1,14 +1,9 @@
 ﻿using Gma.System.MouseKeyHook;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
@@ -38,6 +33,7 @@ namespace oto
 
         //---------------------------------- NOTE --------------------------------------------
         // Tilføj flere muligheder.
+       
 
         public void KeyBind()
         {
@@ -59,7 +55,7 @@ namespace oto
             //4. Install listener
             Hook.GlobalEvents().OnCombination(assignment);
         }
-
+        
         public void DoStart()
         {
             tempVal = NumericUpDown_Kliks.Value;
@@ -135,8 +131,10 @@ namespace oto
                     // If it needs to go slower 
                     Thread.Sleep(delay);
                     i++;
-                    if (MaxKliks)
-                        this.Invoke(new MethodInvoker(() => NumericUpDown_Kliks.Value--));                   
+                    if (MaxKliks && NumericUpDown_Kliks.Value >= 1)
+                        this.Invoke(new MethodInvoker(() => NumericUpDown_Kliks.Value--));
+                    else
+                        i = 0;
                 }
             }
             else if (delay == -1)
@@ -156,8 +154,10 @@ namespace oto
                         Thread.Sleep(15);
                     }
                     i++;
-                    if (MaxKliks)
+                    if (MaxKliks && NumericUpDown_Kliks.Value >= 1)
                         this.Invoke(new MethodInvoker(() => NumericUpDown_Kliks.Value--));
+                    else
+                        i = 0;
                 }
             }
             else if (delay == -2)
@@ -175,8 +175,10 @@ namespace oto
                         Thread.Sleep(13);
                     }
                     i++;
-                    if (MaxKliks)
+                    if (MaxKliks && NumericUpDown_Kliks.Value >= 1)
                         this.Invoke(new MethodInvoker(() => NumericUpDown_Kliks.Value--));
+                    else
+                        i = 0;
                 }
             }
             else
@@ -189,8 +191,10 @@ namespace oto
                     uint y = (uint)position.Y;
                     AutoClicker.mouse_event(6U, x, y, 0U, 0U);
                     i++;
-                    if (MaxKliks)
+                    if (MaxKliks && NumericUpDown_Kliks.Value >= 1)
                         this.Invoke(new MethodInvoker(() => NumericUpDown_Kliks.Value--));
+                    else
+                        i = 0;
                 }
             }
         }
