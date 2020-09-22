@@ -47,19 +47,15 @@
             this.label8 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.NumericUpDown_Kliks = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Delay)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_Kliks)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // button_stop
             // 
             this.button_stop.Enabled = false;
-            this.button_stop.Location = new System.Drawing.Point(442, 117);
+            this.button_stop.Location = new System.Drawing.Point(372, 108);
             this.button_stop.Name = "button_stop";
             this.button_stop.Size = new System.Drawing.Size(215, 78);
             this.button_stop.TabIndex = 2;
@@ -69,7 +65,7 @@
             // 
             // button_start
             // 
-            this.button_start.Location = new System.Drawing.Point(442, 16);
+            this.button_start.Location = new System.Drawing.Point(372, 7);
             this.button_start.Name = "button_start";
             this.button_start.Size = new System.Drawing.Size(215, 78);
             this.button_start.TabIndex = 1;
@@ -79,7 +75,7 @@
             // 
             // numericUpDown_Delay
             // 
-            this.numericUpDown_Delay.Location = new System.Drawing.Point(183, 156);
+            this.numericUpDown_Delay.Location = new System.Drawing.Point(136, 147);
             this.numericUpDown_Delay.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -97,7 +93,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(15, 158);
+            this.label1.Location = new System.Drawing.Point(3, 149);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(127, 32);
             this.label1.TabIndex = 4;
@@ -106,7 +102,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(15, 114);
+            this.label2.Location = new System.Drawing.Point(3, 105);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(310, 32);
             this.label2.TabIndex = 3;
@@ -115,7 +111,7 @@
             // label_stop
             // 
             this.label_stop.AutoSize = true;
-            this.label_stop.Location = new System.Drawing.Point(183, 43);
+            this.label_stop.Location = new System.Drawing.Point(171, 34);
             this.label_stop.Name = "label_stop";
             this.label_stop.Size = new System.Drawing.Size(90, 32);
             this.label_stop.TabIndex = 0;
@@ -124,7 +120,7 @@
             // label_run
             // 
             this.label_run.AutoSize = true;
-            this.label_run.Location = new System.Drawing.Point(15, 43);
+            this.label_run.Location = new System.Drawing.Point(3, 34);
             this.label_run.Name = "label_run";
             this.label_run.Size = new System.Drawing.Size(120, 32);
             this.label_run.TabIndex = 0;
@@ -134,7 +130,7 @@
             // label_startguide
             // 
             this.label_startguide.AutoSize = true;
-            this.label_startguide.Location = new System.Drawing.Point(15, 11);
+            this.label_startguide.Location = new System.Drawing.Point(3, 2);
             this.label_startguide.Name = "label_startguide";
             this.label_startguide.Size = new System.Drawing.Size(258, 32);
             this.label_startguide.TabIndex = 0;
@@ -180,7 +176,7 @@
             // label_stopguide
             // 
             this.label_stopguide.AutoSize = true;
-            this.label_stopguide.Location = new System.Drawing.Point(15, 11);
+            this.label_stopguide.Location = new System.Drawing.Point(3, 2);
             this.label_stopguide.Name = "label_stopguide";
             this.label_stopguide.Size = new System.Drawing.Size(258, 32);
             this.label_stopguide.TabIndex = 8;
@@ -194,7 +190,7 @@
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Location = new System.Drawing.Point(11, 323);
+            this.groupBox1.Location = new System.Drawing.Point(9, 277);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(480, 263);
             this.groupBox1.TabIndex = 9;
@@ -212,7 +208,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(58, 255);
+            this.label5.Location = new System.Drawing.Point(55, 244);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(63, 32);
             this.label5.TabIndex = 10;
@@ -221,7 +217,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(58, 218);
+            this.label8.Location = new System.Drawing.Point(55, 207);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(172, 32);
             this.label8.TabIndex = 12;
@@ -230,7 +226,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(37, 253);
+            this.checkBox1.Location = new System.Drawing.Point(34, 235);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(15, 14);
             this.checkBox1.TabIndex = 13;
@@ -240,7 +236,7 @@
             // NumericUpDown_Kliks
             // 
             this.NumericUpDown_Kliks.Enabled = false;
-            this.NumericUpDown_Kliks.Location = new System.Drawing.Point(139, 253);
+            this.NumericUpDown_Kliks.Location = new System.Drawing.Point(136, 242);
             this.NumericUpDown_Kliks.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -251,30 +247,10 @@
             this.NumericUpDown_Kliks.TabIndex = 14;
             this.NumericUpDown_Kliks.ValueChanged += new System.EventHandler(this.NumericUpDown_Kliks_ValueChanged);
             // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Enabled = false;
-            this.numericUpDown1.Location = new System.Drawing.Point(394, 264);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 39);
-            this.numericUpDown1.TabIndex = 9;
-            this.numericUpDown1.Visible = false;
-            // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.Enabled = false;
-            this.numericUpDown2.Location = new System.Drawing.Point(520, 264);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(120, 39);
-            this.numericUpDown2.TabIndex = 15;
-            this.numericUpDown2.Visible = false;
-            // 
             // AutoClicker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.numericUpDown2);
-            this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.NumericUpDown_Kliks);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.label8);
@@ -292,13 +268,11 @@
             this.Font = new System.Drawing.Font("Segoe UI", 18F);
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "AutoClicker";
-            this.Size = new System.Drawing.Size(673, 629);
+            this.Size = new System.Drawing.Size(594, 548);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Delay)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_Kliks)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -325,7 +299,5 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.NumericUpDown NumericUpDown_Kliks;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
     }
 }

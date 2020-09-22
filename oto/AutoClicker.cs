@@ -128,6 +128,7 @@ namespace oto
                     position = Cursor.Position;
                     uint y = (uint)position.Y;
                     AutoClicker.mouse_event(6U, x, y, 0U, 0U);
+
                     // If it needs to go slower 
                     Thread.Sleep(delay);
                     i++;
@@ -148,6 +149,7 @@ namespace oto
                     position = Cursor.Position;
                     uint y = (uint)position.Y;
                     AutoClicker.mouse_event(6U, x, y, 0U, 0U);
+
                     //i%3 sleep 15
                     if (i % 3 == 0)
                     {
@@ -169,6 +171,7 @@ namespace oto
                     position = Cursor.Position;
                     uint y = (uint)position.Y;
                     AutoClicker.mouse_event(6U, x, y, 0U, 0U);
+
                     //i%4 sleep 13
                     if (i % 4 == 0)
                     {
