@@ -224,5 +224,14 @@ namespace oto
                 NumericUpDown_Kliks.Value = tempVal;
             }
         }
+
+        private void AutoClicker_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.Modifiers == Keys.Shift && e.KeyCode == Keys.X) || (e.Modifiers == Keys.Shift && e.KeyCode == Keys.Z))
+            {
+                DoStart();
+                e.Handled = e.SuppressKeyPress = true;
+            }
+        }
     }
 }

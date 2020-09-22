@@ -269,6 +269,7 @@
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "AutoClicker";
             this.Size = new System.Drawing.Size(594, 548);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AutoClicker_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Delay)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
