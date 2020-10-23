@@ -21,76 +21,66 @@ namespace oto
 
         public static bool stop;
         public static bool MaxKliks;
+
         public static int i;
         public static int max;
+        public static int start = 1;
+
         public static decimal tempVal;
 
         public AutoClicker()
         {
             InitializeComponent();
             KeyBind();
-        }
-
-        //---------------------------------- NOTE --------------------------------------------
-        // Tilføj flere muligheder.
-       
+        }       
 
         public void KeyBind()
         {
-            //1. Define key combinations
             var start = Combination.FromString("Shift+X");
-            var end = Combination.FromString("Shift+Z");
 
-            //2. Define actions
             Action actionStart = DoStart;
-            Action actionStop = DoStop;
 
-            //3. Assign actions to key combinations
             var assignment = new Dictionary<Combination, Action>
             {
                 {start, actionStart},
-                {end, actionStop},
             };
 
-            //4. Install listener
             Hook.GlobalEvents().OnCombination(assignment);
         }
         
         public void DoStart()
         {
-            tempVal = NumericUpDown_Kliks.Value;
+            if (start == 1)
+            {
+                tempVal = NumericUpDown_Kliks.Value;
 
-            button_start.Enabled = false;
-            button_stop.Enabled = true;
+                button_start.Enabled = false;
+                button_stop.Enabled = true;
 
-            label_stop.Visible = false;
-            label_run.Visible = true;
+                label_stop.Visible = false;
+                label_run.Visible = true;
 
-            label_startguide.Visible = false;
-            label_stopguide.Visible = true;
+                label_startguide.Visible = false;
 
-            stop = false;
+                stop = false;
 
-            Thread thread = new Thread(new ThreadStart(AutoClick));
-            thread.Name = "klik";
-            thread.Start();
-        }
-
-        public void DoStop()
-        {
-            if (i == max)
+                Thread thread = new Thread(new ThreadStart(AutoClick));
+                thread.Name = "klik";
+                thread.Start();
+            }
+            if (start == 0)
+            {
+                start = 1;
                 stop = true;
 
-            stop = true;
-         
-            button_start.Enabled = true;
-            button_stop.Enabled = false;
+                button_start.Enabled = true;
+                button_stop.Enabled = false;
 
-            label_run.Visible = false;
-            label_stop.Visible = true;
+                label_run.Visible = false;
+                label_stop.Visible = true;
 
-            label_startguide.Visible = true;
-            label_stopguide.Visible = false;
+                label_startguide.Visible = true;
+            }
 
         }
 
@@ -101,11 +91,12 @@ namespace oto
 
         private void button_stop_Click(object sender, EventArgs e)
         {
-            DoStop();
+            DoStart();
         }
 
         public void AutoClick()
         {
+            start = 0;
             int delay = Convert.ToInt32(numericUpDown_Delay.Value);
 
             i = 0;
@@ -142,8 +133,6 @@ namespace oto
             {
                 while (!stop && i < max)
                 {
-                    //int j = Convert.ToInt32(numericUpDown1.Value);
-                    //int k = Convert.ToInt32(numericUpDown2.Value);
                     Point position = Cursor.Position;
                     uint x = (uint)position.X;
                     position = Cursor.Position;
@@ -220,13 +209,15 @@ namespace oto
         {
             if (NumericUpDown_Kliks.Value == 0 && MaxKliks)
             {
-                DoStop();
+                DoStart();
                 NumericUpDown_Kliks.Value = tempVal;
             }
         }
 
         private void AutoClicker_KeyDown(object sender, KeyEventArgs e)
         {
+            // If either Shift and x or z is pressed while "oto" is focused
+            // Windows will not play that anoying beep.()
             if ((e.Modifiers == Keys.Shift && e.KeyCode == Keys.X) || (e.Modifiers == Keys.Shift && e.KeyCode == Keys.Z))
             {
                 DoStart();

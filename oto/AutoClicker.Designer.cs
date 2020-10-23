@@ -40,7 +40,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.label_stopguide = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -173,16 +172,6 @@
             this.label7.TabIndex = 7;
             this.label7.Text = "Delay = -2 means 200 CPS**";
             // 
-            // label_stopguide
-            // 
-            this.label_stopguide.AutoSize = true;
-            this.label_stopguide.Location = new System.Drawing.Point(3, 2);
-            this.label_stopguide.Name = "label_stopguide";
-            this.label_stopguide.Size = new System.Drawing.Size(258, 32);
-            this.label_stopguide.TabIndex = 8;
-            this.label_stopguide.Text = "Press Shift + Z to stop ";
-            this.label_stopguide.Visible = false;
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label9);
@@ -256,7 +245,6 @@
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.label_stopguide);
             this.Controls.Add(this.label_startguide);
             this.Controls.Add(this.label_run);
             this.Controls.Add(this.label_stop);
@@ -293,7 +281,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label_stopguide;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label8;
