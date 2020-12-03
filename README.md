@@ -8,17 +8,21 @@ can run a CPS of 200 and an CPS 1000+ with no limiter.
 
 HELP
 ---------------------
-Delay: it is the time between each click.
-Higer delay lower CPS.
+#### Delay: <br>
+It is the time between each click. <br>
+Higer delay lower CPS.<br>
 
-0: No delay, it goes as fast as possible.
--1: Should be around 100 CPS, may vary.
--2:Should be around 200 CPS, may vary.
+0: No delay, it goes as fast as possible. <br>
+-1: Should be around 100 CPS, may vary. <br>
+-2:Should be around 200 CPS, may vary. <br>
+
+#### Max clicks: <br>
+If you anly want to click an X amount of times.
 
 
-*NOTE
-CPS can vary with quite a big margin depending on the performance of the CPU.
-I have measured (on -1) all fom 77-250 CPS. But -2 is still faster than -1.
+##### *NOTE <br>
+CPS can vary with quite a big margin depending on the performance of the CPU.<br>
+I have measured (on -1) all fom 77-250 CPS. But -2 is still faster than -1.<br>
 
 --------------------------
 
