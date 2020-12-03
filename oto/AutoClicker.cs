@@ -60,8 +60,6 @@ namespace oto
                 label_stop.Visible = false;
                 label_run.Visible = true;
 
-                label_startguide.Visible = false;
-
                 stop = false;
 
                 Thread thread = new Thread(new ThreadStart(AutoClick));
@@ -78,20 +76,8 @@ namespace oto
 
                 label_run.Visible = false;
                 label_stop.Visible = true;
-
-                label_startguide.Visible = true;
             }
 
-        }
-
-        private void button_start_Click(object sender, EventArgs e)
-        {
-            DoStart();
-        }
-
-        private void button_stop_Click(object sender, EventArgs e)
-        {
-            DoStart();
         }
 
         public void AutoClick()
@@ -216,12 +202,10 @@ namespace oto
 
         private void AutoClicker_KeyDown(object sender, KeyEventArgs e)
         {
-            // If either Shift and x or z is pressed while "oto" is focused
-            // Windows will not play that anoying beep.()
-            if ((e.Modifiers == Keys.Shift && e.KeyCode == Keys.X) || (e.Modifiers == Keys.Shift && e.KeyCode == Keys.Z))
+            if ((e.Modifiers == Keys.Shift && e.KeyCode == Keys.X))
             {
                 DoStart();
-                e.Handled = e.SuppressKeyPress = true;
+                e.SuppressKeyPress = true;
             }
         }
     }
