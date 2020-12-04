@@ -3,21 +3,26 @@
 This auto clicker is the fastest auto clicker I have ever found/created.
 
 To compare "OP Auto Clicker 3.0" has a maximum CPS of about 64, where "oto"
-has a stable* CPS of 200 and an unstable* CPS 1000+
+can run a CPS of 200 and an CPS 1000+ with no limiter.
 
 
-*Stable meaning most apps can still comprehend it, but you might experience some lag.
-Unstable I have yet to encounter something that doesn't lag or out right crashes.
-
-From oto
+HELP
 ---------------------
+#### Delay: <br>
+It is the time between each click. <br>
+Higer delay lower CPS.<br>
 
-*This is an estimate made on an old pc. I have no real way of measureing it, because it is simply to fast. 
-But I can say it is over 1000 CPS since that is the max my CPS-measure can measure accurate.
+0: No delay, it goes as fast as possible. <br>
+-1: Should be around 100 CPS, may vary. <br>
+-2:Should be around 200 CPS, may vary. <br>
+
+#### Max clicks: <br>
+If you anly want to click an X amount of times.
 
 
-**CPS can vary with quite a big margin depending on the performance of the CPU.
-I have measured (on -1) all fom 77-250 CPS. But -2 is still faster than -1.
+##### *NOTE <br>
+CPS can vary with quite a big margin depending on the performance of the CPU.<br>
+I have measured (on -1) all fom 77-250 CPS. But -2 is still faster than -1.<br>
 
 --------------------------
 
