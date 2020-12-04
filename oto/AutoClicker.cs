@@ -11,6 +11,12 @@ namespace oto
 {
     public partial class AutoClicker : UserControl
     {
+        PopUp p = new PopUp();
+        Help h = new Help();
+        ChangeStart cs = new ChangeStart();
+
+        #region var
+
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         public static extern void mouse_event(
             uint dwFlags,
@@ -28,11 +34,16 @@ namespace oto
 
         public static decimal tempVal;
 
+        #endregion
+
         public AutoClicker()
         {
             InitializeComponent();
             KeyBind();
         }       
+
+        // Make layout same style as Macro, change color when running.
+
 
         public void KeyBind()
         {
@@ -54,12 +65,6 @@ namespace oto
             {
                 tempVal = NumericUpDown_Kliks.Value;
 
-                button_start.Enabled = false;
-                button_stop.Enabled = true;
-
-                label_stop.Visible = false;
-                label_run.Visible = true;
-
                 stop = false;
 
                 Thread thread = new Thread(new ThreadStart(AutoClick));
@@ -71,11 +76,6 @@ namespace oto
                 start = 1;
                 stop = true;
 
-                button_start.Enabled = true;
-                button_stop.Enabled = false;
-
-                label_run.Visible = false;
-                label_stop.Visible = true;
             }
 
         }
@@ -207,6 +207,25 @@ namespace oto
                 DoStart();
                 e.SuppressKeyPress = true;
             }
+        }
+
+        private void button_help_Click(object sender, EventArgs e)
+        {
+            OpenUC(h);
+        }
+
+        private void button_change_Click(object sender, EventArgs e)
+        {
+            OpenUC(cs);
+        }
+
+        public void OpenUC(Control UC)
+        {
+            p.Controls.Clear();
+            p.Show();
+            p.Controls.Add(UC);
+            p.Text = UC.Name;
+            UC.Show();
         }
     }
 }
