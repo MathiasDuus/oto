@@ -1,4 +1,10 @@
 ﻿using System.Windows.Forms;
+using System.Configuration;
+using System.Collections.Specialized;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace oto
 {
@@ -19,11 +25,27 @@ namespace oto
                         this.KeyPreview = false;
                         CloseUC(AutoClicker.cs);
 
-                        // Write to a file instead
+                        // Write to file
+                        ConfigurationManager.AppSettings.Set("HotKey", ChangeStart.combo.ToString());
+                        
+                        JObject videogameRatings = new JObject(
+                            new JProperty("Halo", 9),
+                            new JProperty("Starcraft", 9),
+                            new JProperty("Call of Duty", 7.5));
+
+                        File.WriteAllText(@"c:\videogames.json", videogameRatings.ToString());
+
+                        // write JSON directly to a file
+                        using (StreamWriter file = File.CreateText(@"c:\videogames.json"))
+                        using (JsonTextWriter writer = new JsonTextWriter(file))
+                        {
+                            videogameRatings.WriteTo(writer);
+                        }
+
+
                         var keybind = new AutoClicker();
                         keybind.unSetHotKey();
                         keybind.KeyBind();
-                        keybind.label_start.Text = "hello";
 
                         break;
 

@@ -4,8 +4,7 @@ namespace oto
 {
     public partial class ChangeStart : UserControl
     {
-        public static string startCombo = "F5";
-        public static int combo = 116;
+        public static int combo;
 
         public ChangeStart()
         {
@@ -32,10 +31,11 @@ namespace oto
 
             textBox1.Text = keyStr;
         }
-
+        /*Obsolete
+        
         public static int ChangeCombo()
         {
             return combo;
-        }
+        }*/
     }
 }

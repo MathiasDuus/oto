@@ -5,7 +5,8 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-
+using System.Configuration;
+using System.Collections.Specialized;
 
 namespace oto
 {
@@ -49,6 +50,7 @@ namespace oto
 
         // Write to a file from esc method
         // Add a way to read from a file, so lable and hotKey gets changed
+        //Evt resource
 
 
         public AutoClicker()
@@ -62,7 +64,7 @@ namespace oto
             // gives the hot key the id of 1
             UniqueHotkeyId = 1;
             // local variable of the KeyValue
-            int HotKeyCode = ChangeStart.ChangeCombo();
+            int HotKeyCode = Convert.ToInt32(ConfigurationManager.AppSettings.Get("HotKey"));
 
             // Bool to both check and register the hot key
             bool hotKeyRegistered = RegisterHotKey(
