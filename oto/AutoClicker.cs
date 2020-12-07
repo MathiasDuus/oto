@@ -11,19 +11,28 @@ namespace oto
 {
     public partial class AutoClicker : UserControl
     {
-        PopUp p = new PopUp();
-        Help h = new Help();
-        ChangeStart cs = new ChangeStart();
-
-        #region var
-
+        #region DLL imports
+        // Import the RegisterHotKey Method
+        [DllImport("user32.dll")]
+        public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
+        // Import the UnregisterHotKey Method
+        [DllImport("user32.dll")]
+        public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        // Import to handle mouse
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         public static extern void mouse_event(
-            uint dwFlags,
-            uint dx,
-            uint dy,
-            uint cButtons,
-            uint dwExtraInfo);
+    uint dwFlags,
+    uint dx,
+    uint dy,
+    uint cButtons,
+    uint dwExtraInfo);
+#endregion
+
+        public static PopUp p = new PopUp();
+        public static Help h = new Help();
+        public static ChangeStart cs = new ChangeStart();
+
+        #region var
 
         public static bool stop;
         public static bool MaxKliks;
@@ -34,35 +43,84 @@ namespace oto
 
         public static decimal tempVal;
 
+        // Used to identify the hotkey
+        public static int UniqueHotkeyId;
         #endregion
+
+        // Write to a file from esc method
+        // Add a way to read from a file, so lable and hotKey gets changed
+
 
         public AutoClicker()
         {
             InitializeComponent();
             KeyBind();
-        }       
-
-        // Make layout same style as Macro, change color when running.
-
+        }
 
         public void KeyBind()
         {
-            var start = Combination.FromString("Shift+X");
+            // gives the hot key the id of 1
+            UniqueHotkeyId = 1;
+            // local variable of the KeyValue
+            int HotKeyCode = ChangeStart.ChangeCombo();
 
-            Action actionStart = DoStart;
+            // Bool to both check and register the hot key
+            bool hotKeyRegistered = RegisterHotKey(
+                this.Handle, UniqueHotkeyId, 0x0000, HotKeyCode
+            );
 
-            var assignment = new Dictionary<Combination, Action>
+            // Verify if the hotkey was succesfully registered, if not, show message in the console
+            if (hotKeyRegistered)
             {
-                {start, actionStart},
-            };
-
-            Hook.GlobalEvents().OnCombination(assignment);
+                Console.WriteLine("Global Hotkey " + ((Keys)HotKeyCode).ToString() + " was succesfully registered");
+                label_start.Text = ((Keys)HotKeyCode).ToString();
+            }
+            else
+            {
+                Console.WriteLine("Global Hotkey couldn't be registered !");
+            }
         }
-        
+
+        public void unSetHotKey()
+        {
+            // Unregister HotKey
+            bool UnRegistered = UnregisterHotKey(this.Handle, UniqueHotkeyId);
+
+            if (UnRegistered)
+            {
+                Console.WriteLine("Global Hotkey was succesfully UNregistered");
+            }
+            else
+            {
+                Console.WriteLine("Global Hotkey couldn't be UNregistered !");
+            }
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            // Catch when a HotKey is pressed !
+            if (m.Msg == 0x0312)
+            {
+                int id = m.WParam.ToInt32();
+
+                // ensures it is the correct key before running the DoStart method
+                if (id == 1)
+                {
+                    DoStart();
+                }
+            }
+
+            base.WndProc(ref m);
+        }
+
         public void DoStart()
         {
             if (start == 1)
             {
+                // Set background color to green
+                Color color = ColorTranslator.FromHtml("#56ba45");
+                this.BackColor = color;
+
                 tempVal = NumericUpDown_Kliks.Value;
 
                 stop = false;
@@ -76,6 +134,8 @@ namespace oto
                 start = 1;
                 stop = true;
 
+                // Reverts the background color back to standard
+                this.BackColor = SystemColors.Control;
             }
 
         }
@@ -200,15 +260,6 @@ namespace oto
             }
         }
 
-        private void AutoClicker_KeyDown(object sender, KeyEventArgs e)
-        {
-            if ((e.Modifiers == Keys.Shift && e.KeyCode == Keys.X))
-            {
-                DoStart();
-                e.SuppressKeyPress = true;
-            }
-        }
-
         private void button_help_Click(object sender, EventArgs e)
         {
             OpenUC(h);
@@ -216,6 +267,7 @@ namespace oto
 
         private void button_change_Click(object sender, EventArgs e)
         {
+            p.KeyPreview = true;
             OpenUC(cs);
         }
 

@@ -38,10 +38,15 @@ namespace oto
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(120, 0);
+            this.ControlBox = false;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 18.25F);
-            this.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(7);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "PopUp";
             this.Text = "PopUp";
+            this.TopMost = true;
             this.ResumeLayout(false);
 
         }

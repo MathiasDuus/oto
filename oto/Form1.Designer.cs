@@ -40,7 +40,7 @@
             this.ClientSize = new System.Drawing.Size(120, 0);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.Margin = new System.Windows.Forms.Padding(7);
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "AutoClicker";

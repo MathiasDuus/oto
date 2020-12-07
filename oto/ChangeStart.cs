@@ -1,20 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace oto
 {
     public partial class ChangeStart : UserControl
     {
+        public static string startCombo = "F5";
+        public static int combo = 116;
+
         public ChangeStart()
         {
             InitializeComponent();
+            this.ActiveControl = textBox1;
+        }
+
+        public void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            combo = e.KeyValue;
+            var keyStr = ((Keys)combo).ToString();
+            switch (keyStr)
+            {
+                case "ControlKey":
+                    keyStr = "Control";
+                    break;
+                case "ShiftKey":
+                    keyStr = "Shift";
+                    break;
+                case "Menu":
+                    keyStr = "Alt";
+                    break;
+            }
+
+            textBox1.Text = keyStr;
+        }
+
+        public static int ChangeCombo()
+        {
+            return combo;
         }
     }
 }
