@@ -1,15 +1,21 @@
-﻿using Gma.System.MouseKeyHook;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using System.Configuration;
-using System.Collections.Specialized;
 
 namespace oto
 {
+    //Class for hotkey
+    public class Hotkey
+    {
+        public int Key { get; set; }
+    }
+
+
     public partial class AutoClicker : UserControl
     {
         #region DLL imports
@@ -33,7 +39,7 @@ namespace oto
         public static Help h = new Help();
         public static ChangeStart cs = new ChangeStart();
 
-        #region var
+        #region variables
 
         public static bool stop;
         public static bool MaxKliks;
@@ -46,15 +52,26 @@ namespace oto
 
         // Used to identify the hotkey
         public static int UniqueHotkeyId;
+
+        //Path to setting file
+        public static string settingPath = @"C:\Users\mathi\OneDrive\Dokumenter\oto\settings.json";
         #endregion
 
-        // Write to a file from esc method
-        // Add a way to read from a file, so lable and hotKey gets changed
-        //Evt resource
+        // The file changes the key code but the label is NOT affected
 
 
         public AutoClicker()
         {
+            // Hvis filen ikke findes skal den oprettes med default værdier.
+            if (!File.Exists(settingPath))
+            {
+                Hotkey hotkey = new Hotkey { 
+                    Key = 116, 
+                };
+
+                File.WriteAllText(settingPath, JsonConvert.SerializeObject(hotkey));
+            }
+
             InitializeComponent();
             KeyBind();
         }
@@ -63,8 +80,21 @@ namespace oto
         {
             // gives the hot key the id of 1
             UniqueHotkeyId = 1;
+
+            /*
+            JObject videogameRatings = new JObject(
+                new JProperty("Hotkey", 116));        
+
+            File.WriteAllText(@"C:\Users\%userprofile%\OneDrive\Dokumenter\oto\settings.json", videogameRatings.ToString());
+             
+             */
+
+            // Getting the settings.json file and deserializing it
+            string json = JObject.Parse(File.ReadAllText(settingPath)).ToString();
+            Hotkey hotkey = JsonConvert.DeserializeObject<Hotkey>(json);
+
             // local variable of the KeyValue
-            int HotKeyCode = Convert.ToInt32(ConfigurationManager.AppSettings.Get("HotKey"));
+            int HotKeyCode = hotkey.Key;
 
             // Bool to both check and register the hot key
             bool hotKeyRegistered = RegisterHotKey(

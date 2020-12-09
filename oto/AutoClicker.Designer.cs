@@ -164,7 +164,7 @@
             this.Font = new System.Drawing.Font("Segoe UI", 18F);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "AutoClicker";
-            this.Size = new System.Drawing.Size(281, 214);
+            this.Size = new System.Drawing.Size(281, 203);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Delay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_Kliks)).EndInit();
             this.ResumeLayout(false);
