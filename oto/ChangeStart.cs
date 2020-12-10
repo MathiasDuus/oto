@@ -31,11 +31,5 @@ namespace oto
 
             textBox1.Text = keyStr;
         }
-        /*Obsolete
-        
-        public static int ChangeCombo()
-        {
-            return combo;
-        }*/
     }
 }

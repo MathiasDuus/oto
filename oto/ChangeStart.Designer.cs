@@ -31,6 +31,7 @@ namespace oto
         {
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button_set = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -50,14 +51,25 @@ namespace oto
             this.textBox1.Location = new System.Drawing.Point(5, 32);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(187, 44);
+            this.textBox1.Size = new System.Drawing.Size(111, 44);
             this.textBox1.TabIndex = 0;
             this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
+            // 
+            // button_set
+            // 
+            this.button_set.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.button_set.Location = new System.Drawing.Point(117, 32);
+            this.button_set.Name = "button_set";
+            this.button_set.Size = new System.Drawing.Size(75, 44);
+            this.button_set.TabIndex = 2;
+            this.button_set.Text = "Set";
+            this.button_set.UseVisualStyleBackColor = true;
             // 
             // ChangeStart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 29F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.button_set);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 18.25F);
@@ -73,5 +85,6 @@ namespace oto
 
         private System.Windows.Forms.Label label1;
         public System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button_set;
     }
 }

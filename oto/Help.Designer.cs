@@ -39,7 +39,7 @@ namespace oto
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(386, 384);
+            this.label1.Size = new System.Drawing.Size(386, 456);
             this.label1.TabIndex = 0;
             this.label1.Text = resources.GetString("label1.Text");
             // 
@@ -49,9 +49,9 @@ namespace oto
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 18.25F);
-            this.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.Margin = new System.Windows.Forms.Padding(7);
             this.Name = "Help";
-            this.Size = new System.Drawing.Size(403, 397);
+            this.Size = new System.Drawing.Size(403, 464);
             this.ResumeLayout(false);
             this.PerformLayout();
 

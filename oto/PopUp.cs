@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.IO;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace oto
 {
@@ -9,6 +7,7 @@ namespace oto
         public PopUp()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterParent;
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -19,23 +18,8 @@ namespace oto
                 {
                     case "ChangeStart":
                         this.KeyPreview = false;
+
                         CloseUC(AutoClicker.cs);
-
-                        // Write to file
-                        //ConfigurationManager.AppSettings.Set("HotKey", ChangeStart.combo.ToString());
-                        Hotkey hotkey = new Hotkey
-                        {
-                            Key = ChangeStart.combo,
-                        };
-
-                        File.WriteAllText(AutoClicker.settingPath, JsonConvert.SerializeObject(hotkey));
-
-
-
-                        var keybind = new AutoClicker();
-                        keybind.unSetHotKey();
-                        keybind.KeyBind();
-
                         break;
 
                     case "Help":

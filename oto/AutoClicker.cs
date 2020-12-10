@@ -15,7 +15,6 @@ namespace oto
         public int Key { get; set; }
     }
 
-
     public partial class AutoClicker : UserControl
     {
         #region DLL imports
@@ -38,6 +37,7 @@ namespace oto
         public static PopUp p = new PopUp();
         public static Help h = new Help();
         public static ChangeStart cs = new ChangeStart();
+        public Hotkey hotkey = new Hotkey();
 
         #region variables
 
@@ -54,40 +54,28 @@ namespace oto
         public static int UniqueHotkeyId;
 
         //Path to setting file
-        public static string settingPath = @"C:\Users\mathi\OneDrive\Dokumenter\oto\settings.json";
+        public static string settingPath = AppDomain.CurrentDomain.BaseDirectory + "settings.json";
         #endregion
-
-        // The file changes the key code but the label is NOT affected
-
 
         public AutoClicker()
         {
-            // Hvis filen ikke findes skal den oprettes med default værdier.
+            // If the fíle does not exist create it with a default value
             if (!File.Exists(settingPath))
             {
-                Hotkey hotkey = new Hotkey { 
-                    Key = 116, 
-                };
+                hotkey.Key = 116;
 
                 File.WriteAllText(settingPath, JsonConvert.SerializeObject(hotkey));
             }
 
             InitializeComponent();
-            KeyBind();
+            SetHotKey();
         }
 
-        public void KeyBind()
+        public void SetHotKey()
         {
             // gives the hot key the id of 1
             UniqueHotkeyId = 1;
 
-            /*
-            JObject videogameRatings = new JObject(
-                new JProperty("Hotkey", 116));        
-
-            File.WriteAllText(@"C:\Users\%userprofile%\OneDrive\Dokumenter\oto\settings.json", videogameRatings.ToString());
-             
-             */
 
             // Getting the settings.json file and deserializing it
             string json = JObject.Parse(File.ReadAllText(settingPath)).ToString();
@@ -105,6 +93,7 @@ namespace oto
             if (hotKeyRegistered)
             {
                 Console.WriteLine("Global Hotkey " + ((Keys)HotKeyCode).ToString() + " was succesfully registered");
+                
                 label_start.Text = ((Keys)HotKeyCode).ToString();
             }
             else
@@ -300,7 +289,24 @@ namespace oto
         private void button_change_Click(object sender, EventArgs e)
         {
             p.KeyPreview = true;
-            OpenUC(cs);
+            //OpenUC(cs);
+
+            p.Controls.Add(cs);
+            p.Text = cs.Name;
+            cs.Show();
+
+
+
+            DialogResult dialogresult = p.ShowDialog();
+            if (dialogresult == DialogResult.OK)
+            {                
+                hotkey.Key = ChangeStart.combo;
+
+                File.WriteAllText(settingPath, JsonConvert.SerializeObject(hotkey));
+                unSetHotKey();
+                SetHotKey();
+                p.Controls.Clear();
+            }
         }
 
         public void OpenUC(Control UC)

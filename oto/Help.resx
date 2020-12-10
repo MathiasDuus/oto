@@ -122,6 +122,9 @@
 It is the time between each click.  
 Higer delay lower CPS.
 
+1000 for 1 click per second
+60 000 for 1 click per minute
+
 0: No delay, it goes as fast as possible.  
 -1: Should be around 100 CPS* 
 -2:Should be around 200 CPS*
