@@ -3,10 +3,10 @@
 This auto clicker is the fastest auto clicker I have ever found/created.
 
 To compare "OP Auto Clicker 3.0" has a maximum CPS of about 64, where "oto"
-can run a CPS of 200 and an CPS 1000+ with no limiter.
+can run a CPS of 200 and CPS 1000+ with no limiter.
 
 
-HELP
+Info
 ---------------------
 #### Delay: <br>
 It is the time between each click. <br>
