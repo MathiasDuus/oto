@@ -10,11 +10,11 @@ Info
 ---------------------
 #### Delay: <br>
 It is the time between each click. <br>
-Higer delay lower CPS.<br>
+Higer delay = lower CPS.<br>
 
 0: No delay, it goes as fast as possible. <br>
--1: Should be around 100 CPS, may vary. <br>
--2:Should be around 200 CPS, may vary. <br>
+-1: Should be around 100 CPS.* <br>
+-2: Should be around 200 CPS.* <br>
 
 #### Max clicks: <br>
 If you anly want to click an X amount of times.
