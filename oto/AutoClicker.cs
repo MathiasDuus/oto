@@ -9,12 +9,6 @@ using System.Windows.Forms;
 
 namespace oto
 {
-    //Class for hotkey
-    public class Hotkey
-    {
-        public int Key { get; set; }
-    }
-
     public partial class AutoClicker : UserControl
     {
         #region DLL imports
@@ -317,5 +311,11 @@ namespace oto
             p.Text = UC.Name;
             UC.Show();
         }
+    }
+    
+    //Class for hotkey
+    public class Hotkey
+    {
+        public int Key { get; set; }
     }
 }
