@@ -1,5 +1,5 @@
-# oto the auto clicker
-https://sourceforge.net/projects/oto-the-autoclicker/
+# oto the auto clicker 
+[![Download oto the autoclicker](https://img.shields.io/sourceforge/dt/oto-the-autoclicker.svg)](https://sourceforge.net/projects/oto-the-autoclicker/files/latest/download)
 
 This auto clicker is the fastest auto clicker I have ever found/created.
 
