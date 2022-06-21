@@ -21,11 +21,11 @@ namespace oto
         // Import to handle mouse
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         public static extern void mouse_event(
-    uint dwFlags,
-    uint dx,
-    uint dy,
-    uint cButtons,
-    uint dwExtraInfo);
+            uint dwFlags,
+            uint dx,
+            uint dy,
+            uint cButtons,
+            uint dwExtraInfo);
 #endregion
 
         public static PopUp p = new PopUp();
