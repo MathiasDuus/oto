@@ -58,6 +58,7 @@
             this.numericUpDown_Delay.Name = "numericUpDown_Delay";
             this.numericUpDown_Delay.Size = new System.Drawing.Size(170, 32);
             this.numericUpDown_Delay.TabIndex = 0;
+            this.numericUpDown_Delay.ValueChanged += new System.EventHandler(this.numericUpDown_Delay_ValueChanged);
             // 
             // label1
             // 
