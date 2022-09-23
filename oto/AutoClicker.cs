@@ -1,10 +1,6 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using oto.Properties;
+﻿using oto.Properties;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -28,12 +24,12 @@ namespace oto
             uint dy,
             uint cButtons,
             uint dwExtraInfo);
-#endregion
+        #endregion
 
         public static PopUp p = new PopUp();
         public static Help h = new Help();
         public static ChangeStart cs = new ChangeStart();
-        public Settings settings = new Settings();
+        public Settings settings = Settings.Default;
 
         #region variables
 
@@ -49,31 +45,10 @@ namespace oto
         // Used to identify the hotkey
         public static int UniqueHotkeyId;
 
-        //Path to setting file
-        public static string settingPath = AppDomain.CurrentDomain.BaseDirectory + "settings.json";
-
         #endregion
 
         public AutoClicker()
         {
-            // If the fíle does not exist create it with a default value
-            if (!File.Exists(settingPath))
-            {
-                settings.HotKey = 116;
-                settings.Delay = 0;                
-
-                File.WriteAllText(settingPath, JsonConvert.SerializeObject(settings));
-            }
-            else
-            {
-                // Set the stored setting values
-                string json = JObject.Parse(File.ReadAllText(settingPath)).ToString();
-                Settings JSONSettings = JsonConvert.DeserializeObject<Settings>(json);
-                settings.HotKey = JSONSettings.HotKey;
-                settings.Delay = JSONSettings.Delay;
-
-            }
-
             InitializeComponent();
             numericUpDown_Delay.Value = settings.Delay;
             SetHotKey();
@@ -84,10 +59,6 @@ namespace oto
             // gives the hot key the id of 1
             UniqueHotkeyId = 1;
 
-
-            // Getting the settings.json file and deserializing it
-            string json = JObject.Parse(File.ReadAllText(settingPath)).ToString();
-            Settings settings = JsonConvert.DeserializeObject<Settings>(json);
             // local variable of the KeyValue
             int HotKeyCode = settings.HotKey;
 
@@ -107,6 +78,7 @@ namespace oto
             {
                 Console.WriteLine("Global Hotkey couldn't be registered !");
             }
+            settings.Save();
         }
 
         public void unSetHotKey()
@@ -131,7 +103,7 @@ namespace oto
             {
                 int id = m.WParam.ToInt32();
 
-                // ensures it is the correct key before running the DoStart method
+                // Ensures it is the correct key before running the DoStart method
                 if (id == 1)
                 {
                     DoStart();
@@ -296,7 +268,6 @@ namespace oto
         private void button_change_Click(object sender, EventArgs e)
         {
             p.KeyPreview = true;
-            //OpenUC(cs);
 
             p.Controls.Add(cs);
             p.Text = cs.Name;
@@ -307,9 +278,9 @@ namespace oto
             DialogResult dialogresult = p.ShowDialog();
             if (dialogresult == DialogResult.OK)
             {
-                settings.HotKey= ChangeStart.combo;
+                settings.HotKey = ChangeStart.combo;
+                settings.Save();
 
-                File.WriteAllText(settingPath, JsonConvert.SerializeObject(settings));
                 unSetHotKey();
                 SetHotKey();
                 p.Controls.Clear();
@@ -327,16 +298,9 @@ namespace oto
 
         private void numericUpDown_Delay_ValueChanged(object sender, EventArgs e)
         {
+            // Sets the delay and saves it
             settings.Delay = (int)numericUpDown_Delay.Value;
-
-            File.WriteAllText(settingPath, JsonConvert.SerializeObject(settings));
+            settings.Save();
         }
-    }
-
-    //Class for hotkey
-    public class Settings
-    {
-        public int HotKey { get; set; }
-        public int Delay { get; set; }
     }
 }
