@@ -43,6 +43,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
     <Reference Update="System">
@@ -66,7 +67,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="appsettings.json" />
     <Content Include="Iconsmind-Outline-Mouse-3.ico" />
   </ItemGroup>
   <ItemGroup>
