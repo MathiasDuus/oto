@@ -9,7 +9,7 @@ namespace oto
         public ChangeStart()
         {
             InitializeComponent();
-            this.ActiveControl = textBox1;
+            this.ActiveControl = textBox_change_start;
         }
 
         public void textBox1_KeyDown(object sender, KeyEventArgs e)
@@ -29,7 +29,7 @@ namespace oto
                     break;
             }
 
-            textBox1.Text = keyStr;
+            textBox_change_start.Text = keyStr;
         }
     }
 }

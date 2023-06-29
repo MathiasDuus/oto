@@ -12,13 +12,13 @@ namespace oto
         #region DLL imports
         // Import the RegisterHotKey Method
         [DllImport("user32.dll")]
-        public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
         // Import the UnregisterHotKey Method
         [DllImport("user32.dll")]
-        public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
         // Import to handle mouse
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        public static extern void mouse_event(
+        private static extern void mouseEvent(
             uint dwFlags,
             uint dx,
             uint dy,
@@ -26,31 +26,31 @@ namespace oto
             uint dwExtraInfo);
         #endregion
 
-        public static PopUp p = new PopUp();
-        public static Help h = new Help();
-        public static ChangeStart cs = new ChangeStart();
+        public static readonly PopUp p = new();
+        public static readonly Help h = new();
+        public static readonly ChangeStart cs = new();
         public Settings settings = Settings.Default;
 
         #region variables
 
-        public static bool stop;
-        public static bool MaxKliks;
+        private static bool stop;
+        private static bool MaxKliks;
 
-        public static int i;
-        public static int max;
-        public static int start = 1;
+        private static int i;
+        private static int max;
+        private static int start = 1;
 
-        public static decimal tempVal;
+        private static decimal tempVal;
 
         // Used to identify the hotkey
-        public static int UniqueHotkeyId;
+        private static int UniqueHotkeyId;
 
         #endregion
 
         public AutoClicker()
         {
             InitializeComponent();
-            numericUpDown_Delay.Value = settings.Delay;
+            numericUpDown_delay.Value = settings.Delay;
             SetHotKey();
         }
 
@@ -81,7 +81,7 @@ namespace oto
             settings.Save();
         }
 
-        public void unSetHotKey()
+        public void UnSetHotKey()
         {
             // Unregister HotKey
             bool UnRegistered = UnregisterHotKey(this.Handle, UniqueHotkeyId);
@@ -121,12 +121,14 @@ namespace oto
                 Color color = ColorTranslator.FromHtml("#56ba45");
                 this.BackColor = color;
 
-                tempVal = NumericUpDown_Kliks.Value;
+                tempVal = NumericUpDown_clicks.Value;
 
                 stop = false;
 
-                Thread thread = new Thread(new ThreadStart(AutoClick));
-                thread.Name = "klik";
+                Thread thread = new(new ThreadStart(AutoClick))
+                {
+                    Name = "klik"
+                };
                 thread.Start();
             }
             if (start == 0)
@@ -149,7 +151,7 @@ namespace oto
 
             if (MaxKliks)
             {
-                max = Convert.ToInt32(NumericUpDown_Kliks.Value);
+                max = Convert.ToInt32(NumericUpDown_clicks.Value);
             }
             else
             {
@@ -164,13 +166,13 @@ namespace oto
                     uint x = (uint)position.X;
                     position = Cursor.Position;
                     uint y = (uint)position.Y;
-                    AutoClicker.mouse_event(6U, x, y, 0U, 0U);
+                    AutoClicker.mouseEvent(6U, x, y, 0U, 0U);
 
                     // If it needs to go slower 
                     Thread.Sleep(delay);
                     i++;
-                    if (MaxKliks && NumericUpDown_Kliks.Value >= 1)
-                        this.Invoke(new MethodInvoker(() => NumericUpDown_Kliks.Value--));
+                    if (MaxKliks && NumericUpDown_clicks.Value >= 1)
+                        this.Invoke(new MethodInvoker(() => NumericUpDown_clicks.Value--));
                     else
                         i = 0;
                 }
@@ -183,7 +185,7 @@ namespace oto
                     uint x = (uint)position.X;
                     position = Cursor.Position;
                     uint y = (uint)position.Y;
-                    AutoClicker.mouse_event(6U, x, y, 0U, 0U);
+                    AutoClicker.mouseEvent(6U, x, y, 0U, 0U);
 
                     //i%3 sleep 15
                     if (i % 3 == 0)
@@ -191,8 +193,8 @@ namespace oto
                         Thread.Sleep(15);
                     }
                     i++;
-                    if (MaxKliks && NumericUpDown_Kliks.Value >= 1)
-                        this.Invoke(new MethodInvoker(() => NumericUpDown_Kliks.Value--));
+                    if (MaxKliks && NumericUpDown_clicks.Value >= 1)
+                        this.Invoke(new MethodInvoker(() => NumericUpDown_clicks.Value--));
                     else
                         i = 0;
                 }
@@ -205,7 +207,7 @@ namespace oto
                     uint x = (uint)position.X;
                     position = Cursor.Position;
                     uint y = (uint)position.Y;
-                    AutoClicker.mouse_event(6U, x, y, 0U, 0U);
+                    AutoClicker.mouseEvent(6U, x, y, 0U, 0U);
 
                     //i%4 sleep 13
                     if (i % 4 == 0)
@@ -213,8 +215,8 @@ namespace oto
                         Thread.Sleep(13);
                     }
                     i++;
-                    if (MaxKliks && NumericUpDown_Kliks.Value >= 1)
-                        this.Invoke(new MethodInvoker(() => NumericUpDown_Kliks.Value--));
+                    if (MaxKliks && NumericUpDown_clicks.Value >= 1)
+                        this.Invoke(new MethodInvoker(() => NumericUpDown_clicks.Value--));
                     else
                         i = 0;
                 }
@@ -227,45 +229,45 @@ namespace oto
                     uint x = (uint)position.X;
                     position = Cursor.Position;
                     uint y = (uint)position.Y;
-                    AutoClicker.mouse_event(6U, x, y, 0U, 0U);
+                    AutoClicker.mouseEvent(6U, x, y, 0U, 0U);
                     i++;
-                    if (MaxKliks && NumericUpDown_Kliks.Value >= 1)
-                        this.Invoke(new MethodInvoker(() => NumericUpDown_Kliks.Value--));
+                    if (MaxKliks && NumericUpDown_clicks.Value >= 1)
+                        this.Invoke(new MethodInvoker(() => NumericUpDown_clicks.Value--));
                     else
                         i = 0;
                 }
             }
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void Checkbox_enable_max_clicks_CheckedChanged(object sender, EventArgs e)
         {
-            MaxKliks = checkBox1.Checked;
+            MaxKliks = checkbox_enable_max_clicks.Checked;
 
             if (MaxKliks)
             {
-                NumericUpDown_Kliks.Enabled = true;
+                NumericUpDown_clicks.Enabled = true;
             }
             else
             {
-                NumericUpDown_Kliks.Enabled = false;
+                NumericUpDown_clicks.Enabled = false;
             }
         }
 
-        private void NumericUpDown_Kliks_ValueChanged(object sender, EventArgs e)
+        private void NumericUpDown_clicks_ValueChanged(object sender, EventArgs e)
         {
-            if (NumericUpDown_Kliks.Value == 0 && MaxKliks)
+            if (NumericUpDown_clicks.Value == 0 && MaxKliks)
             {
                 DoStart();
-                NumericUpDown_Kliks.Value = tempVal;
+                NumericUpDown_clicks.Value = tempVal;
             }
         }
 
-        private void button_help_Click(object sender, EventArgs e)
+        private void Button_help_Click(object sender, EventArgs e)
         {
             OpenUC(h);
         }
 
-        private void button_change_Click(object sender, EventArgs e)
+        private void Button_change_Click(object sender, EventArgs e)
         {
             p.KeyPreview = true;
 
@@ -281,13 +283,13 @@ namespace oto
                 settings.HotKey = ChangeStart.combo;
                 settings.Save();
 
-                unSetHotKey();
+                UnSetHotKey();
                 SetHotKey();
                 p.Controls.Clear();
             }
         }
 
-        public void OpenUC(Control UC)
+        public static void OpenUC(Control UC)
         {
             p.Controls.Clear();
             p.Show();
@@ -296,10 +298,10 @@ namespace oto
             UC.Show();
         }
 
-        private void numericUpDown_Delay_ValueChanged(object sender, EventArgs e)
+        private void NumericUpDown_delay_ValueChanged(object sender, EventArgs e)
         {
             // Sets the delay and saves it
-            settings.Delay = (int)numericUpDown_Delay.Value;
+            settings.Delay = (int)numericUpDown_delay.Value;
             settings.Save();
         }
     }
