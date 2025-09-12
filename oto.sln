@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30503.244
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36429.23 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "oto", "oto\oto.csproj", "{EB4705BC-705E-49AB-A26E-23D7312134E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "oto", "oto\oto.csproj", "{F8C0BDBE-DB57-4F91-8815-CF988A6AE185}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EB4705BC-705E-49AB-A26E-23D7312134E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB4705BC-705E-49AB-A26E-23D7312134E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB4705BC-705E-49AB-A26E-23D7312134E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB4705BC-705E-49AB-A26E-23D7312134E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8C0BDBE-DB57-4F91-8815-CF988A6AE185}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8C0BDBE-DB57-4F91-8815-CF988A6AE185}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8C0BDBE-DB57-4F91-8815-CF988A6AE185}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8C0BDBE-DB57-4F91-8815-CF988A6AE185}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {8CF83F43-1509-490C-B3BC-9999AA46799C}
+		SolutionGuid = {ACEFE359-64AF-48D6-AD17-7ED67F264FF7}
 	EndGlobalSection
 EndGlobal
