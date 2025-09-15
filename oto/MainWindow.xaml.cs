@@ -1,11 +1,7 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-// You might need a global keyboard hook library, e.g. Gma.System.MouseKeyHook or your own P/Invoke
 
 namespace oto
 {
@@ -13,14 +9,38 @@ namespace oto
     {
         private CancellationTokenSource? _cts;
         private Key _hotkey = Key.F5;
+
         private bool _isRunning = false;
+        public bool IsRunning
+        {
+            get => _isRunning;
+            set
+            {
+                if (_isRunning != value)
+                {
+                    _isRunning = value;
+                    if (!_isRunning)
+                    {
+                        StopClicking();
+                    }
+                }
+            }
+        }
 
         // Registers a hot key with Windows.
         [DllImport("user32.dll")]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
         // Unregisters the hot key with Windows.
         [DllImport("user32.dll")]
-        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id); 
+        
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+        private static extern void mouse_event(
+            uint dwFlags,
+            uint dx,
+            uint dy,
+            uint cButtons,
+            uint dwExtraInfo);
 
 
         // Used to identify the hotkey
@@ -38,23 +58,17 @@ namespace oto
         public MainWindow()
         {
             InitializeComponent();
+            Topmost = true;
             Loaded += MainWindow_Loaded;
             EnableMaxClicks.Checked += EnableMaxClicks_Checked;
             EnableMaxClicks.Unchecked += EnableMaxClicks_Unchecked;
             ChangeHotkeyButton.Click += ChangeHotkeyButton_Click;
 
             CurrentHotkeyText.Text = _hotkey.ToString();
-
-            System.Diagnostics.Debug.WriteLine("Starting");
-
-            // Hook global keyboard to listen for hotkey
-            //HookGlobalHotkey();
-            //HwndSource source = HwndSource.FromHwnd(Handle);
-            //source.AddHook(HwndHook);
         }
+
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            // Now the window handle is valid
             HookGlobalHotkey();
             HwndSource source = HwndSource.FromHwnd(Handle);
             source.AddHook(HwndHook);
@@ -72,7 +86,8 @@ namespace oto
 
         private void ChangeHotkeyButton_Click(object sender, RoutedEventArgs e)
         {
-            // Show a dialog or capture the next key press
+            // Only allow it to be clicked once
+            ChangeHotkeyButton.IsEnabled = false;
             StatusText.Text = "Press a key to set new hotkey...";
             this.PreviewKeyDown += MainWindow_PreviewKeyDown_ForHotkeyChange;
         }
@@ -83,12 +98,13 @@ namespace oto
             CurrentHotkeyText.Text = _hotkey.ToString();
             StatusText.Text = "";
             this.PreviewKeyDown -= MainWindow_PreviewKeyDown_ForHotkeyChange;
+            UnhookGlobalHotkey();
             HookGlobalHotkey(_hotkey);
+            ChangeHotkeyButton.IsEnabled = true;
         }
 
         private void HookGlobalHotkey(Key HotKey = Key.F5)
         {
-            System.Diagnostics.Debug.WriteLine("Hooking global hotkey");
             // gives the hot key the id of 1
             UniqueHotkeyId = 1;
 
@@ -100,16 +116,15 @@ namespace oto
                 this.Handle, UniqueHotkeyId, 0x0000, HotKeyCode
             );
 
-            // Verify if the hotkey was succesfully registered, if not, show message in the console
+            // Verify if the hotkey was succesfully registered, if not, show to user
             if (hotKeyRegistered)
             {
-                System.Diagnostics.Debug.WriteLine("Global Hotkey " + HotKey.ToString() + " was succesfully registered");
                 _hotkey = HotKey;
                 CurrentHotkeyText.Text = HotKey.ToString();
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("Global Hotkey couldn't be registered !");
+                StatusText.Text = "Hotkey couldn't be registered!\n It may be already in use.";
             }
 
             //            settings.Save();
@@ -127,7 +142,7 @@ namespace oto
 
         private void ToggleStartStop()
         {
-            if (_isRunning)
+            if (IsRunning)
                 StopClicking();
             else
                 StartClicking();
@@ -135,26 +150,36 @@ namespace oto
 
         private async void StartClicking()
         {
-            _isRunning = true;
+            IsRunning = true;
             _cts = new CancellationTokenSource();
+            // Change backgound color to indicate running state
+            Background = System.Windows.Media.Brushes.Green;
+
+            // Disable all ui inputs
+            ChangeHotkeyButton.IsEnabled = false;
+            DelayBox.IsEnabled = false;
+            EnableMaxClicks.IsEnabled = false;
+            ClicksBox.IsEnabled = false;
+
 
             // Read values from UI
             int delay = 0;
             if (!int.TryParse(DelayBox.Text, out delay))
             {
                 StatusText.Text = "Invalid delay value";
-                _isRunning = false;
+                IsRunning = false;
                 return;
             }
 
             bool useMaxClicks = EnableMaxClicks.IsChecked == true;
             long maxClicks = 0;
+
             if (useMaxClicks)
             {
                 if (!long.TryParse(ClicksBox.Text, out maxClicks) || maxClicks < 1)
                 {
                     StatusText.Text = "Invalid clicks value";
-                    _isRunning = false;
+                    IsRunning = false;
                     return;
                 }
             }
@@ -171,36 +196,46 @@ namespace oto
                         break;
                     }
 
-                    // Simulate mouse click at current cursor position
+                    // Get current cursor position on UI thread
+                    Point position = Dispatcher.Invoke(() =>
+                    {
+                        Point point = Mouse.GetPosition(this);
+                        return PointToScreen(point);
+                    });
 
+                    uint x = (uint)position.X;
+                    uint y = (uint)position.Y;
+                    // Left Click
+                    mouse_event(6U, x, y, 0U, 0U);
 
-                    clicksDone++;
+                    // Only increment clicks if max clicks is enabled
+                    if (useMaxClicks)
+                    {
+                        clicksDone++;
+                    }
 
-                    // Apply delay logic
                     if (delay > 0)
                     {
                         Thread.Sleep(delay);
                     }
-                    else if (delay == -1)
-                    {
-                        // Some computation to get ~100 CPS
-                        // For example: Sleep(10) or adaptive
-                        Thread.Sleep(10);
-                    }
-                    else if (delay == -2)
-                    {
-                        // Higher speed (~200 CPS)
-                        Thread.Sleep(5);
-                    }
                 }
             }, _cts.Token);
 
-            _isRunning = false;
+            IsRunning = false;
         }
 
         private void StopClicking()
         {
             _cts?.Cancel();
+
+            // Re-enable all ui inputs
+            ChangeHotkeyButton.IsEnabled = true;
+            DelayBox.IsEnabled = true;
+            EnableMaxClicks.IsEnabled = true;
+            ClicksBox.IsEnabled = true;
+
+            // Change backgound color to indicate stopped state
+            Background = System.Windows.Media.Brushes.White;
         }
 
         protected override void OnClosed(EventArgs e)
@@ -213,16 +248,7 @@ namespace oto
         private void UnhookGlobalHotkey()
         {
             // Unregister HotKey
-            bool UnRegistered = UnregisterHotKey(this.Handle, UniqueHotkeyId);
-
-            if (UnRegistered)
-            {
-                System.Diagnostics.Debug.WriteLine("Global Hotkey was succesfully UNregistered");
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine("Global Hotkey couldn't be UNregistered !");
-            }
+            UnregisterHotKey(this.Handle, UniqueHotkeyId);
         }
     }
 }
