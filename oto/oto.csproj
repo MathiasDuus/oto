@@ -8,6 +8,7 @@
     <UseWPF>true</UseWPF>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+    <Configurations>Debug;Release;publish</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
