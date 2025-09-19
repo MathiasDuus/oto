@@ -1,32 +1,27 @@
 ﻿using oto.Properties;
-using System.Globalization;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using Xceed.Wpf.Toolkit;
 
 namespace oto
 {
+    /// <summary>
+    /// Main application window for the Oto clicker tool.
+    /// </summary>
     public partial class MainWindow : Window
     {
-        // Registers a hot key with Windows.
-        [DllImport("user32.dll")]
-        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
-        // Unregisters the hot key with Windows.
-        [DllImport("user32.dll")]
-        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        private static extern void mouse_event(
-            uint dwFlags,
-            uint dx,
-            uint dy,
-            uint cButtons,
-            uint dwExtraInfo);
-
-        // Indicates whether the clicking task is running
         private bool _isRunning = false;
+        private CancellationTokenSource? _cts;
+        private Key _hotkey = Key.F5;
+        private static int UniqueHotkeyId = 1;
+        private bool _isDelayBoxInitialized = false;
+        private int delay = 0;
+        private static readonly Settings user_settings = Settings.Default;
+        private HotkeyManager? _hotkeyManager;
+
+        /// <summary>
+        /// Indicates whether the clicking task is running.
+        /// </summary>
         public bool IsRunning
         {
             get => _isRunning;
@@ -43,35 +38,14 @@ namespace oto
             }
         }
 
-        // Get the window handle
-        private IntPtr Handle
-        {
-            get
-            {
-                WindowInteropHelper helper = new(this);
-                return helper.Handle;
-            }
-        }
+        /// <summary>
+        /// Gets the window handle for interop operations.
+        /// </summary>
+        private IntPtr Handle => new WindowInteropHelper(this).Handle;
 
-        // Cancellation token source to stop the clicking task
-        private CancellationTokenSource? _cts;
-
-        // Current hotkey, default to F5
-        private Key _hotkey = Key.F5;
-
-        // Used to identify the hotkey
-        private static int UniqueHotkeyId;
-
-        // To avoid triggering ValueChanged event on initialization 
-        private bool _isDelayBoxInitialized = false;
-
-        // Delay between clicks in milliseconds
-        private int delay = 0;
-
-        // User settings instance
-        private static readonly Settings user_settings = Settings.Default;
-
-
+        /// <summary>
+        /// Initializes the main window and UI event handlers.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -83,27 +57,20 @@ namespace oto
 
             _hotkey = KeyInterop.KeyFromVirtualKey(user_settings.Hotkey);
             CurrentHotkeyText.Text = _hotkey.ToString();
-            
             delay = user_settings.Delay;
             DelayBox.Text = delay.ToString();
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            _hotkeyManager = new HotkeyManager(Handle, UniqueHotkeyId);
             HookGlobalHotkey(_hotkey);
             HwndSource source = HwndSource.FromHwnd(Handle);
             source.AddHook(HwndHook);
         }
 
-        private void EnableMaxClicks_Checked(object sender, RoutedEventArgs e)
-        {
-            ClicksBox.IsEnabled = true;
-        }
-
-        private void EnableMaxClicks_Unchecked(object sender, RoutedEventArgs e)
-        {
-            ClicksBox.IsEnabled = false;
-        }
+        private void EnableMaxClicks_Checked(object sender, RoutedEventArgs e) => ClicksBox.IsEnabled = true;
+        private void EnableMaxClicks_Unchecked(object sender, RoutedEventArgs e) => ClicksBox.IsEnabled = false;
 
         private void ChangeHotkeyButton_Click(object sender, RoutedEventArgs e)
         {
@@ -138,35 +105,33 @@ namespace oto
             }
         }
 
+        /// <summary>
+        /// Registers the global hotkey and updates settings.
+        /// </summary>
         private void HookGlobalHotkey(Key HotKey = Key.F5)
         {
-            // gives the hot key the id of 1
-            UniqueHotkeyId = 1;
+            if (_hotkeyManager == null)
+                _hotkeyManager = new HotkeyManager(Handle, UniqueHotkeyId);
 
-            // local variable of the KeyValue
-            uint HotKeyCode = (uint)KeyInterop.VirtualKeyFromKey(HotKey);
+            bool hotKeyRegistered = _hotkeyManager.Register(HotKey);
 
-            //Bool to both check and register the hot key
-            bool hotKeyRegistered = RegisterHotKey(
-                this.Handle, UniqueHotkeyId, 0x0000, HotKeyCode
-            );
-
-            // Verify if the hotkey was succesfully registered, if not, show to user
             if (hotKeyRegistered)
             {
                 _hotkey = HotKey;
                 CurrentHotkeyText.Text = HotKey.ToString();
-                user_settings.Hotkey = (int)HotKeyCode;
+                user_settings.Hotkey = (int)KeyInterop.VirtualKeyFromKey(HotKey);
                 user_settings.Save();
-                System.Diagnostics.Debug.WriteLine($"Hotkey registered: {HotKey} ({HotKeyCode})");
+                System.Diagnostics.Debug.WriteLine($"Hotkey registered: {HotKey}");
             }
             else
             {
                 StatusText.Text = "Hotkey couldn't be registered!\n It may be already in use.";
             }
-
         }
 
+        /// <summary>
+        /// Handles window messages for hotkey activation.
+        /// </summary>
         private IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             const int WM_HOTKEY = 0x0312;
@@ -178,6 +143,9 @@ namespace oto
             return IntPtr.Zero;
         }
 
+        /// <summary>
+        /// Toggles the clicker between running and stopped states.
+        /// </summary>
         private void ToggleStartStop()
         {
             if (IsRunning)
@@ -186,21 +154,20 @@ namespace oto
                 StartClicking();
         }
 
+        /// <summary>
+        /// Starts the automated clicking task.
+        /// </summary>
         private async void StartClicking()
         {
             IsRunning = true;
             _cts = new CancellationTokenSource();
-            // Change backgound color to indicate running state
             Background = System.Windows.Media.Brushes.Green;
 
-            // Disable all ui inputs
             ChangeHotkeyButton.IsEnabled = false;
             DelayBox.IsEnabled = false;
             EnableMaxClicks.IsEnabled = false;
             ClicksBox.IsEnabled = false;
 
-
-            // Read values from UI
             if (!int.TryParse(DelayBox.Text, out delay))
             {
                 StatusText.Text = "Invalid delay value";
@@ -230,13 +197,9 @@ namespace oto
             {
                 while (!_cts.Token.IsCancellationRequested)
                 {
-                    // If max clicks is enabled and reached → break
                     if (useMaxClicks && clicksDone >= maxClicks)
-                    {
                         break;
-                    }
 
-                    // Get current cursor position on UI thread
                     Point position = Dispatcher.Invoke(() =>
                     {
                         Point point = Mouse.GetPosition(this);
@@ -245,50 +208,47 @@ namespace oto
 
                     uint x = (uint)position.X;
                     uint y = (uint)position.Y;
-                    // Left Click
-                    mouse_event(6U, x, y, 0U, 0U);
+                    Win32Interop.mouse_event(6U, x, y, 0U, 0U);
 
-                    // Only increment clicks if max clicks is enabled
                     if (useMaxClicks)
-                    {
                         clicksDone++;
-                    }
 
                     if (delay > 0)
-                    {
                         Thread.Sleep(delay);
-                    }
                 }
             }, _cts.Token);
 
             IsRunning = false;
         }
 
+        /// <summary>
+        /// Stops the automated clicking task and restores UI state.
+        /// </summary>
         private void StopClicking()
         {
             _cts?.Cancel();
-
-            // Re-enable all ui inputs
             ChangeHotkeyButton.IsEnabled = true;
             DelayBox.IsEnabled = true;
             EnableMaxClicks.IsEnabled = true;
             ClicksBox.IsEnabled = true;
-
-            // Change backgound color to indicate stopped state
             Background = System.Windows.Media.Brushes.White;
         }
 
+        /// <summary>
+        /// Cleans up resources and unregisters hotkeys on window close.
+        /// </summary>
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-            // Clean up hooks
             UnhookGlobalHotkey();
         }
 
+        /// <summary>
+        /// Unregisters the global hotkey.
+        /// </summary>
         private void UnhookGlobalHotkey()
         {
-            // Unregister HotKey
-            UnregisterHotKey(this.Handle, UniqueHotkeyId);
+            _hotkeyManager?.Unregister();
         }
     }
 }
