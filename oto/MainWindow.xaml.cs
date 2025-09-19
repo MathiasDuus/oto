@@ -1,15 +1,31 @@
-﻿using System.Runtime.InteropServices;
+﻿using oto.Properties;
+using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using Xceed.Wpf.Toolkit;
 
 namespace oto
 {
     public partial class MainWindow : Window
     {
-        private CancellationTokenSource? _cts;
-        private Key _hotkey = Key.F5;
+        // Registers a hot key with Windows.
+        [DllImport("user32.dll")]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+        // Unregisters the hot key with Windows.
+        [DllImport("user32.dll")]
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+        private static extern void mouse_event(
+            uint dwFlags,
+            uint dx,
+            uint dy,
+            uint cButtons,
+            uint dwExtraInfo);
+
+        // Indicates whether the clicking task is running
         private bool _isRunning = false;
         public bool IsRunning
         {
@@ -27,25 +43,7 @@ namespace oto
             }
         }
 
-        // Registers a hot key with Windows.
-        [DllImport("user32.dll")]
-        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
-        // Unregisters the hot key with Windows.
-        [DllImport("user32.dll")]
-        private static extern bool UnregisterHotKey(IntPtr hWnd, int id); 
-        
-        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        private static extern void mouse_event(
-            uint dwFlags,
-            uint dx,
-            uint dy,
-            uint cButtons,
-            uint dwExtraInfo);
-
-
-        // Used to identify the hotkey
-        private static int UniqueHotkeyId;
-
+        // Get the window handle
         private IntPtr Handle
         {
             get
@@ -54,6 +52,25 @@ namespace oto
                 return helper.Handle;
             }
         }
+
+        // Cancellation token source to stop the clicking task
+        private CancellationTokenSource? _cts;
+
+        // Current hotkey, default to F5
+        private Key _hotkey = Key.F5;
+
+        // Used to identify the hotkey
+        private static int UniqueHotkeyId;
+
+        // To avoid triggering ValueChanged event on initialization 
+        private bool _isDelayBoxInitialized = false;
+
+        // Delay between clicks in milliseconds
+        private int delay = 0;
+
+        // User settings instance
+        private static readonly Settings user_settings = Settings.Default;
+
 
         public MainWindow()
         {
@@ -64,12 +81,16 @@ namespace oto
             EnableMaxClicks.Unchecked += EnableMaxClicks_Unchecked;
             ChangeHotkeyButton.Click += ChangeHotkeyButton_Click;
 
+            _hotkey = KeyInterop.KeyFromVirtualKey(user_settings.Hotkey);
             CurrentHotkeyText.Text = _hotkey.ToString();
+            
+            delay = user_settings.Delay;
+            DelayBox.Text = delay.ToString();
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            HookGlobalHotkey();
+            HookGlobalHotkey(_hotkey);
             HwndSource source = HwndSource.FromHwnd(Handle);
             source.AddHook(HwndHook);
         }
@@ -86,7 +107,6 @@ namespace oto
 
         private void ChangeHotkeyButton_Click(object sender, RoutedEventArgs e)
         {
-            // Only allow it to be clicked once
             ChangeHotkeyButton.IsEnabled = false;
             StatusText.Text = "Press a key to set new hotkey...";
             this.PreviewKeyDown += MainWindow_PreviewKeyDown_ForHotkeyChange;
@@ -103,13 +123,28 @@ namespace oto
             ChangeHotkeyButton.IsEnabled = true;
         }
 
+        private void DelayBox_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (!_isDelayBoxInitialized)
+            {
+                _isDelayBoxInitialized = true;
+                return;
+            }
+            if (DelayBox.Value is int newDelay)
+            {
+                delay = newDelay;
+                user_settings.Delay = delay;
+                user_settings.Save();
+            }
+        }
+
         private void HookGlobalHotkey(Key HotKey = Key.F5)
         {
             // gives the hot key the id of 1
             UniqueHotkeyId = 1;
 
             // local variable of the KeyValue
-            uint HotKeyCode = (uint)KeyInterop.VirtualKeyFromKey(HotKey);// settings.HotKey
+            uint HotKeyCode = (uint)KeyInterop.VirtualKeyFromKey(HotKey);
 
             //Bool to both check and register the hot key
             bool hotKeyRegistered = RegisterHotKey(
@@ -121,14 +156,17 @@ namespace oto
             {
                 _hotkey = HotKey;
                 CurrentHotkeyText.Text = HotKey.ToString();
+                user_settings.Hotkey = (int)HotKeyCode;
+                user_settings.Save();
+                System.Diagnostics.Debug.WriteLine($"Hotkey registered: {HotKey} ({HotKeyCode})");
             }
             else
             {
                 StatusText.Text = "Hotkey couldn't be registered!\n It may be already in use.";
             }
 
-            //            settings.Save();
         }
+
         private IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             const int WM_HOTKEY = 0x0312;
@@ -163,13 +201,15 @@ namespace oto
 
 
             // Read values from UI
-            int delay = 0;
             if (!int.TryParse(DelayBox.Text, out delay))
             {
                 StatusText.Text = "Invalid delay value";
                 IsRunning = false;
                 return;
             }
+
+            user_settings.Delay = delay;
+            user_settings.Save();
 
             bool useMaxClicks = EnableMaxClicks.IsChecked == true;
             long maxClicks = 0;
