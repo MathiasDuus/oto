@@ -1,10 +1,14 @@
 ﻿<Window x:Class="oto.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:oto"
-        Title="oto - Fastest AutoClicker" Height="200" Width="200"
-        ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
-    <Grid Margin="10">
+        Title="oto"
+        ResizeMode="NoResize" 
+        WindowStartupLocation="CenterScreen" 
+        Width="220" Height="217" 
+        Icon="/icon.ico" Topmost="True">
+    <Grid Margin="10,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- Delay row -->
@@ -16,14 +20,15 @@
             <!-- Hotkey change -->
             <RowDefinition Height="Auto"/>
             <!-- Current hotkey display -->
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <!-- Spacer or status messages -->
         </Grid.RowDefinitions>
 
         <!-- Delay (ms) -->
         <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
             <TextBlock Text="Delay (ms):" VerticalAlignment="Center" Width="100"/>
-            <TextBox x:Name="DelayBox" Width="80" Text="0" ToolTip="0 = no delay; -1 ≈ ~100 CPS; -2 ≈ ~200 CPS" />
+            <xctk:IntegerUpDown x:Name="DelayBox" ValueChanged="DelayBox_ValueChanged" Width="80" Margin="0,5,0,0" Minimum="0" Value="0" />
+
         </StackPanel>
 
         <!-- Enable max clicks -->
@@ -32,18 +37,18 @@
         <!-- Number of clicks -->
         <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0,0,0,10">
             <TextBlock Text="Clicks:" VerticalAlignment="Center" Width="100"/>
-            <TextBox x:Name="ClicksBox" Width="80" Text="0" IsEnabled="False"/>
+            <xctk:IntegerUpDown x:Name="ClicksBox" Width="80" Margin="0,5,0,0" Minimum="0" Value="0" IsEnabled="False" />
         </StackPanel>
 
         <!-- Hotkey change -->
         <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="0,0,0,10">
-            <TextBlock Text="To start/stop press:" VerticalAlignment="Center" Width="120"/>
-            <TextBlock x:Name="CurrentHotkeyText" Text="F5" VerticalAlignment="Center" 
-                   FontSize="16" FontWeight="Bold"/>
+            <TextBlock Text="To start/stop press:" VerticalAlignment="Center" Width="105"/>
+            <Button x:Name="ChangeHotkeyButton" Content="Change" Width="80" />
         </StackPanel>
 
         <!-- Change hotkey -->
-        <Button Grid.Row="4" x:Name="ChangeHotkeyButton" Content="Change" Width="80" />
+        <TextBlock Grid.Row="4" x:Name="CurrentHotkeyText" Text="F5" VerticalAlignment="Center" 
+                   HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>
 
         <!-- Status / messages -->
         <TextBlock Grid.Row="5" x:Name="StatusText" Text="" Foreground="Red" 
